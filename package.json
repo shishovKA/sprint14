@@ -1,0 +1,30 @@
+{
+  "name": "sprint12",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "Konstantin Shishov",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "nodemon": "^2.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shishovKA/sprint12.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shishovKA/sprint12/issues"
+  },
+  "homepage": "https://github.com/shishovKA/sprint12#readme",
+  "description": ""
+}
