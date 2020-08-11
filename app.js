@@ -1,11 +1,8 @@
 const express = require('express');
-
-const path = require('path');
+const mongoose = require('mongoose');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 //  обработчик ошибки 404
 const errorNotFound = (req, res) => {
@@ -20,6 +17,10 @@ app.use('/users', users);
 app.use('/cards', cards);
 app.use(errorNotFound);
 
-app.listen(PORT, () => {
-  console.log(`Слушаем на порту ${PORT}`);
+mongoose.connect('mongodb://localhost:27017/mestodb', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
 });
+
+app.listen(PORT);
