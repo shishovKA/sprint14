@@ -15,7 +15,7 @@ const errorNotFound = (req, res) => {
 
 //  импортируем роуты
 const routesUsers = require('./routes/users.js');
-//const routesCards = require('./routes/cards.js');
+const routesCards = require('./routes/cards.js');
 
 //  временный мидлвар для авторизации
 app.use((req, res, next) => {
@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/users', routesUsers);
-//app.use('/cards', routesCards);
+app.use('/cards', routesCards);
 app.use(errorNotFound);
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
