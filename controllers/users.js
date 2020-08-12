@@ -1,16 +1,21 @@
-const User = require('../models/user.js');
+const User = require('../models/user');
 
-module.exports.getFilms = (req, res) => {
+module.exports.getUsers = (req, res) => {
   User.find({})
-    .then((films) => res.send({ data: films }))
+    .then((users) => res.send({ data: users }))
     .catch((err) => res.status(500).send({ message: err.message }));
 };
 
-module.exports.createFilm = (req, res) => {
-  const { title, genre, directorId } = req.body;
+module.exports.getUserById = (req, res) => {
+  const { userId } = req.params;
+  User.findById(userId)
+    .then((user) => res.send({ data: user }))
+    .catch((err) => res.status(500).send({ message: err.message }));
+};
 
-  User.create({ title, genre, director: directorId })
-
-    .then((film) => res.send({ data: film }))
+module.exports.createUser = (req, res) => {
+  const { name, about, avatar } = req.body;
+  User.create({ name, about, avatar })
+    .then((user) => res.send({ data: user }))
     .catch((err) => res.status(500).send({ message: err.message }));
 };
