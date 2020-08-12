@@ -10,11 +10,11 @@ const errorNotFound = (req, res) => {
 };
 
 //  импортируем роуты
-const users = require('./routes/users.js');
-const cards = require('./routes/cards');
+const routesUsers = require('./routes/users.js');
+const routesCards = require('./routes/cards.js');
 
-app.use('/users', users);
-app.use('/cards', cards);
+app.use('/users', routesUsers);
+app.use('/cards', routesCards);
 app.use(errorNotFound);
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {

@@ -1,3 +1,5 @@
+/*
+
 const cards = require('express').Router();
 const fsPromises = require('fs').promises;
 const path = require('path');
@@ -19,3 +21,5 @@ const loadFile = (req, res) => {
 cards.use(loadFile);
 
 module.exports = cards;
+
+*/

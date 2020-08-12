@@ -1,3 +1,13 @@
+const router = require('express').Router();
+const { getUsers, getUserById, createUser } = require('../controllers/users.js');
+
+router.get('/', getUsers);
+router.get('/:userId', getUserById);
+router.post('/', createUser);
+
+module.exports = router;
+
+/*
 const users = require('express').Router();
 const fsPromises = require('fs').promises;
 const path = require('path');
@@ -47,3 +57,4 @@ users.get('/:id', doesUserExist);
 users.get('/:id', sendUser);
 
 module.exports = users;
+*/
