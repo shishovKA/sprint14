@@ -6,6 +6,13 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 app.use(bodyParser.json());
+app.use((err, req, res, next) => {
+  if (err) {
+    res.status(400).send({ message: 'bad JSON' });
+  } else {
+    next();
+  }
+});
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //  обработчик ошибки 404
