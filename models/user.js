@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 
-const validUrl = require('../scripts/validator.js');
-
-const customValidator = [validUrl, 'Неверный формат ссылки'];
+const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -19,7 +17,11 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    validate: customValidator,
+    validate: {
+      validator(link) {
+        return validator.isURL(link);
+      },
+    },
     required: true,
   },
 });
