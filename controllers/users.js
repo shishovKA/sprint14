@@ -53,9 +53,11 @@ module.exports.updateUserAvatar = (req, res) => {
     {
       new: true,
       runValidators: true,
-      upsert: true,
     },
   )
-    .then((user) => res.send({ data: user }))
-    .catch(() => res.status(400).send({ message: 'Данные не прошли валидацию' }));
+    .then((user) => {
+      if (!user) return res.status(404).send({ message: 'пользователь не найден' });
+      return res.send({ data: user });
+    })
+    .catch(() => res.status(400).send({ message: 'Пользователь не найден, или данные не валидны' }));
 };
