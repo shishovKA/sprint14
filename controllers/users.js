@@ -85,14 +85,16 @@ module.exports.login = (req, res) => {
       // создадим токен
       const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
 
-      // запишем token в куку
+      /* запись token в куку
       res
         .cookie('jwt', token, {
           maxAge: 604800000,
           httpOnly: true,
         })
         .end();
-      // res.send({ token }); вернуть токен в теле ответа
+      */
+
+      res.send({ token });
     })
     .catch((err) => {
       // ошибка аутентификации

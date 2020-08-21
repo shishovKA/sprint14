@@ -27,17 +27,11 @@ const routesCards = require('./routes/cards.js');
 //  импортируем контроллеры
 const { login, createUser } = require('./controllers/users.js');
 
-//  временный мидлвар для авторизации
-app.use((req, res, next) => {
-  req.user = {
-    _id: '5f339bd5ee72fe29f46bb050',
-  };
-  next();
-});
+// импортируем мидлвары
+const auth = require('./middlewares/auth');
 
-app.use('/users', routesUsers);
-app.use('/cards', routesCards);
-
+app.use('/users', auth, routesUsers);
+app.use('/cards', auth, routesCards);
 app.post('/signin', login);
 app.post('/signup', createUser);
 
