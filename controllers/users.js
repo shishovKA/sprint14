@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user.js');
 
 module.exports.getUsers = (req, res) => {
@@ -74,4 +75,29 @@ module.exports.updateUserAvatar = (req, res) => {
       return res.send({ data: user });
     })
     .catch(() => res.status(400).send({ message: 'Пользователь не найден, или данные не валидны' }));
+};
+
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      // создадим токен
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+
+      // запишем token в куку
+      res
+        .cookie('jwt', token, {
+          maxAge: 604800000,
+          httpOnly: true,
+        })
+        .end();
+      // res.send({ token }); вернуть токен в теле ответа
+    })
+    .catch((err) => {
+      // ошибка аутентификации
+      res
+        .status(401)
+        .send({ message: err.message });
+    });
 };
