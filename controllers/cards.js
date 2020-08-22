@@ -19,7 +19,7 @@ module.exports.checkOwner = (req, res, next) => {
   Card.findById(cardId)
     .then((card) => {
       if (!card) return res.status(404).send({ message: 'карточка не найдена' });
-      if (!card.owner.equals(req.user._id)) return res.status(400).send({ message: 'вы не можете удалять чужую карточку' });
+      if (!card.owner.equals(req.user._id)) return res.status(403).send({ message: 'вы не можете удалять чужую карточку' });
       next(); // пропускаем запрос дальше
       return true;
     })
