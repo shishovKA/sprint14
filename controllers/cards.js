@@ -14,6 +14,18 @@ module.exports.createCard = (req, res) => {
     .catch((err) => res.status(400).send({ message: err.message }));
 };
 
+module.exports.checkOwner = (req, res, next) => {
+  const { cardId } = req.params;
+  Card.findById(cardId)
+    .then((card) => {
+      if (!card) return res.status(404).send({ message: 'карточка не найдена' });
+      if (!card.owner.equals(req.user._id)) return res.status(400).send({ message: 'вы не можете удалять чужую карточку' });
+      next(); // пропускаем запрос дальше
+      return true;
+    })
+    .catch(() => res.status(404).send({ message: 'карточка не найдена' }));
+};
+
 module.exports.delCardById = (req, res) => {
   const { cardId } = req.params;
   Card.findByIdAndRemove(cardId)

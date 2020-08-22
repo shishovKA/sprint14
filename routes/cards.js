@@ -5,11 +5,12 @@ const {
   delCardById,
   likeCard,
   dislikeCard,
+  checkOwner,
 } = require('../controllers/cards.js');
 
 router.get('/', getCards);
 router.post('/', createCard);
-router.delete('/:cardId', delCardById);
+router.delete('/:cardId', checkOwner, delCardById);
 router.put('/:cardId/likes', likeCard);
 router.delete('/:cardId/likes', dislikeCard);
 
