@@ -33,8 +33,8 @@ module.exports.createUser = (req, res) => {
       avatar,
       email,
       password: hash,
-    }))
-    .then((user) => res.send({ data: user }))
+    })
+      .then((user) => res.send({ data: user })))
     .catch((err) => res.status(400).send({ message: err.message }));
 };
 
