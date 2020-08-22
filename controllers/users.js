@@ -1,6 +1,15 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const PasswordValidator = require('password-validator');
 const User = require('../models/user.js');
+
+const passwordSchema = new PasswordValidator();
+
+passwordSchema
+  .is().min(8)
+  .is().max(100)
+  // eslint-disable-next-line newline-per-chained-call
+  .has().not().spaces();
 
 module.exports.getUsers = (req, res) => {
   User.find({})
@@ -26,23 +35,26 @@ module.exports.createUser = (req, res) => {
     email,
     password,
   } = req.body;
-  bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name,
-      about,
-      avatar,
-      email,
-      password: hash,
-    })
-      .then((user) => {
-        const sendUser = JSON.parse(JSON.stringify(user));
-        delete sendUser.password;
-        res.send({ data: sendUser });
-      }))
-    .catch((err) => {
-      if (err.code === 11000) return res.status(409).send({ message: 'пользователь с таким email уже зарегистрирован' });
-      return res.status(400).send({ message: err.message });
-    });
+
+  if (passwordSchema.validate(password)) {
+    bcrypt.hash(password, 10)
+      .then((hash) => User.create({
+        name,
+        about,
+        avatar,
+        email,
+        password: hash,
+      })
+        .then((user) => {
+          const sendUser = JSON.parse(JSON.stringify(user));
+          delete sendUser.password;
+          res.send({ data: sendUser });
+        }))
+      .catch((err) => {
+        if (err.code === 11000) return res.status(409).send({ message: 'пользователь с таким email уже зарегистрирован' });
+        return res.status(400).send({ message: err.message });
+      });
+  } else res.status(400).send({ message: 'неверный формат пароля' });
 };
 
 module.exports.updateUser = (req, res) => {
