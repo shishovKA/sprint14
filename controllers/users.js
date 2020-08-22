@@ -39,7 +39,10 @@ module.exports.createUser = (req, res) => {
         delete sendUser.password;
         res.send({ data: sendUser });
       }))
-    .catch((err) => res.status(400).send({ message: err.message }));
+    .catch((err) => {
+      if (err.code === 11000) return res.status(409).send({ message: 'пользователь с таким email уже зарегистрирован' });
+      return res.status(400).send({ message: err.message });
+    });
 };
 
 module.exports.updateUser = (req, res) => {
