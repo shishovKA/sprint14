@@ -34,7 +34,11 @@ module.exports.createUser = (req, res) => {
       email,
       password: hash,
     })
-      .then((user) => res.send({ data: user })))
+      .then((user) => {
+        const sendUser = JSON.parse(JSON.stringify(user));
+        delete sendUser.password;
+        res.send({ data: sendUser });
+      }))
     .catch((err) => res.status(400).send({ message: err.message }));
 };
 
