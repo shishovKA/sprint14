@@ -1,11 +1,19 @@
 const express = require('express');
-
-const path = require('path');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+app.use((err, req, res, next) => {
+  if (err) {
+    res.status(400).send({ message: 'bad JSON' });
+  } else {
+    next();
+  }
+});
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //  обработчик ошибки 404
 const errorNotFound = (req, res) => {
@@ -13,13 +21,26 @@ const errorNotFound = (req, res) => {
 };
 
 //  импортируем роуты
-const users = require('./routes/users.js');
-const cards = require('./routes/cards');
+const routesUsers = require('./routes/users.js');
+const routesCards = require('./routes/cards.js');
 
-app.use('/users', users);
-app.use('/cards', cards);
+//  импортируем контроллеры
+const { login, createUser } = require('./controllers/users.js');
+
+// импортируем мидлвары
+const auth = require('./middlewares/auth');
+
+app.use('/users', auth, routesUsers);
+app.use('/cards', auth, routesCards);
+app.post('/signin', login);
+app.post('/signup', createUser);
+
 app.use(errorNotFound);
 
-app.listen(PORT, () => {
-  console.log(`Слушаем на порту ${PORT}`);
+mongoose.connect('mongodb://localhost:27017/mestodb', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
 });
+
+app.listen(PORT);

@@ -1,5 +1,5 @@
 {
-  "name": "sprint12",
+  "name": "sprint13",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
@@ -10,7 +10,13 @@
   "author": "Konstantin Shishov",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.28",
+    "password-validator": "^5.1.0",
+    "validator": "^13.1.1"
   },
   "devDependencies": {
     "eslint": "^7.6.0",
@@ -26,5 +32,5 @@
     "url": "https://github.com/shishovKA/sprint12/issues"
   },
   "homepage": "https://github.com/shishovKA/sprint12#readme",
-  "description": ""
+  "description": "Проектная работа 13-го спринта"
 }

@@ -1,21 +1,17 @@
-const cards = require('express').Router();
-const fsPromises = require('fs').promises;
-const path = require('path');
+const router = require('express').Router();
+const {
+  getCards,
+  createCard,
+  delCardById,
+  likeCard,
+  dislikeCard,
+  checkOwner,
+} = require('../controllers/cards.js');
 
-let cardsFile;
+router.get('/', getCards);
+router.post('/', createCard);
+router.delete('/:cardId', checkOwner, delCardById);
+router.put('/:cardId/likes', likeCard);
+router.delete('/:cardId/likes', dislikeCard);
 
-const loadFile = (req, res) => {
-  const fileDir = path.join(__dirname, '../data/cards.json');
-  fsPromises.readFile(fileDir, { encoding: 'utf8' })
-    .then((data) => {
-      cardsFile = JSON.parse(data);
-      res.json(cardsFile);
-    })
-    .catch(() => {
-      res.status(500).json({ message: `Ошибка при загрузке файла по адресу ${fileDir}` });
-    });
-};
-
-cards.use(loadFile);
-
-module.exports = cards;
+module.exports = router;
